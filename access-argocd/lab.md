@@ -25,3 +25,27 @@ Argo CD is now running in our cluster, but by default, it's not exposed to the o
 1. Why is `kubectl port-forward` an option to access Argo CD during development, and why might it not be suitable for production environments?
 2. What security implications should you consider after retrieving the initial admin password, and what's the best practice for managing it?
 3. In what scenarios would you prefer using the Argo CD CLI over the web UI, and vice versa?
+
+## ✅ Lab Solution
+
+### 1. Retrieve the initial admin password
+
+```bash
+kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 --decode
+```
+
+### 2. Port-forward the Argo CD server
+```bash
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
+
+### 3. Log in to the Argo CD web UI
+Open your browser and go to `https://localhost:8080`. Use `admin` as the username and the retrieved password.
+
+### 4. Install the Argo CD CLI
+Follow the instructions for your operating system from the [Argo CD CLI Installation Guide](https://argo-cd.readthedocs.io/en/stable/cli_installation/).
+
+### 5. Log in to the Argo CD API server using the CLI
+```bash
+argocd login localhost:8080 --username admin --password <retrieved-password> --insecure
+```
