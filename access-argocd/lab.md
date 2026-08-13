@@ -30,22 +30,33 @@ Argo CD is now running in our cluster, but by default, it's not exposed to the o
 
 ### 1. Retrieve the initial admin password
 
+The initial admin password is stored in a Kubernetes secret named `argocd-initial-admin-secret` in the `argocd` namespace. You can retrieve and decode it using the following command:
+
 ```bash
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 --decode
 ```
 
 ### 2. Port-forward the Argo CD server
+
 ```bash
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
 ### 3. Log in to the Argo CD web UI
+
 Open your browser and go to `https://localhost:8080`. Use `admin` as the username and the retrieved password.
 
 ### 4. Install the Argo CD CLI
+
 Follow the instructions for your operating system from the [Argo CD CLI Installation Guide](https://argo-cd.readthedocs.io/en/stable/cli_installation/).
 
 ### 5. Log in to the Argo CD API server using the CLI
+
 ```bash
 argocd login localhost:8080 --username admin --password <retrieved-password> --insecure
+```
+Once connected, you can start managing your applications using the CLI. To change the initial admin password, use the following command:
+
+```bash
+argocd account update-password
 ```
