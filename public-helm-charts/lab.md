@@ -48,7 +48,7 @@ Port-forward to access the dashboard locally:
 kubectl port-forward -n headlamp service/headlamp 4466:80
 ```
 
-Then access the dashboard at: `https://localhost:8443`
+Then access the dashboard at: `http://localhost:4466`
 
 **Note:** You'll need to create a service account and token to log in:
 
