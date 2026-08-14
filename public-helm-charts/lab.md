@@ -45,7 +45,7 @@ When deploying from a public Helm repository instead of a Git repository:
 Port-forward to access the dashboard locally:
 
 ```bash
-kubectl port-forward svc/k8s-dashboard-kong-proxy 8443:443 -n k8s-dashboard
+kubectl port-forward -n headlamp service/headlamp 4466:80
 ```
 
 Then access the dashboard at: `https://localhost:8443`
