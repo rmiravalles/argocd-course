@@ -14,7 +14,7 @@ In this lab, you will enable the `selfHeal` policy on your `guestbook` applicati
 2.  Apply the updated manifest to the cluster.
 3.  Use the `kubectl scale` command to manually change the number of replicas for the `guestbook` deployment to a different value (e.g., `1`).
 4.  Observe in the Argo CD UI as the application becomes `OutOfSync` and is almost instantly and automatically synced back to the state defined in Git.
-5.  Verify with `kubectl` that the number of replicas has been restored to the value specified in your `Application` manifest's `valuesObject`.
+5.  Verify with `kubectl` that the number of replicas has been restored to the value specified in your `Application` manifest's `valuesObject` (e.g., `3` if that is the value in `values.yaml`).
 
 ## 📚 Helpful Resources
 
@@ -26,3 +26,29 @@ In this lab, you will enable the `selfHeal` policy on your `guestbook` applicati
 1. Why does automated sync alone not fix configuration drift (manual cluster changes), and how does self-healing complete the GitOps enforcement loop?
 2. What are the potential risks of enabling pruning in a shared namespace where multiple teams deploy applications, and how would you mitigate these risks?
 3. Under what circumstances might you want to temporarily disable self-healing in production, and what are the trade-offs of doing so?
+
+## 🏁 Lab Solution
+
+1.  Update the `guestbook-app.yaml` manifest to include the `selfHeal: true` option in the `syncPolicy` block:
+
+    ```yaml
+    spec:
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+    ```
+
+2.  Apply the updated manifest to the cluster:
+
+    ```bash
+    kubectl apply -f guestbook-app.yaml
+    ```
+
+3.  Manually change the number of replicas for the `guestbook` deployment:
+
+    ```bash
+    kubectl scale deployment guestbook-helm-guestbook --replicas=6
+    ```
+
+4.  Observe in the Argo CD UI that the application becomes `OutOfSync` and is automatically synced back to the state defined in Git.
